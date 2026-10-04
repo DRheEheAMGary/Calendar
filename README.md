@@ -9,6 +9,28 @@
 
 ---
 
+## 本仓库当前的部署状态
+
+| | |
+| --- | --- |
+| 仓库 | <https://github.com/DRheEheAMGary/Calendar> |
+| 在线日历 | <https://drheeheamgary.github.io/Calendar/> |
+| 提醒 Issue | [#1 📅 日历提醒](https://github.com/DRheEheAMGary/Calendar/issues/1)（标着 `calendar-reminder`） |
+| 定时任务 | 每天 UTC 22:00（北京时间 06:00） |
+
+**第一次使用请先做这件事：** 打开 [`data/dates.json`](data/dates.json)，
+把里面 6 条 `示例：…` 演示数据换成你自己的日期，然后 `git push`。
+演示数据留着的话，日历上会一直显示它们。
+
+### 怎么确认一切都正常
+
+1. `node scripts/test.mjs` —— 本地跑 89 项检查；
+2. 打开在线日历 —— 带圆点的日子就是被标记的日期；
+3. **Actions ▸ Reminder ▸ Run workflow** —— 手动触发一次，跑完去 Issues 看有没有提醒；
+4. 想彩排某一天，在上面那个手动触发里把 `date` 填成 `2026-11-30` 再运行。
+
+---
+
 ## 它是怎么工作的
 
 ```
