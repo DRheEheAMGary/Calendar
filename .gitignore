@@ -24,3 +24,8 @@ npm-debug.log*
 # Local environment overrides.
 .env
 .env.local
+
+# Scratch files used to pass multi-line commit messages on Windows.
+COMMIT_MSG.txt
+MSG.txt
+*.commitmsg
