@@ -1,0 +1,16 @@
+# The workflows run on Linux while the project is developed on Windows.
+# Without this, Git's autocrlf would hand CRLF shell scripts and JSON to the
+# runner; the JSON is still valid, but the heredocs and JS are safer as LF.
+* text=auto eol=lf
+
+# Binary assets must never be normalised.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+
+# Keep the generated build output and lockfiles out of diffs entirely.
+dist/** linguist-generated=true
+data/reminder.json linguist-generated=true

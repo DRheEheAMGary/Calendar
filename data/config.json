@@ -1,0 +1,6 @@
+{
+  "$schema": "./schema.json",
+  "timezone": "Asia/Shanghai",
+  "noticeLeadDays": 0,
+  "upcomingLimit": 10
+}

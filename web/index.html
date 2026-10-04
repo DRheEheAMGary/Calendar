@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>日历 · Calendar</title>
+    <meta
+      name="description"
+      content="一个由 GitHub Actions 驱动的极简日历：高亮你在 data/dates.json 里标记的日期，到点自动开提醒。"
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%85%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <div class="hero-main">
+          <p class="eyebrow" id="today-label">—</p>
+          <h1>日历</h1>
+          <p class="hero-sub">
+            标记的日期会被高亮。<strong>GitHub Actions 每天定时检查</strong>，命中的当天自动开一个 Issue 提醒你。
+          </p>
+        </div>
+        <div class="hero-stats" aria-live="polite">
+          <div class="stat">
+            <span class="stat-value" id="stat-due">–</span>
+            <span class="stat-label">今天</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="stat-total">–</span>
+            <span class="stat-label">已标记</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="stat-next">–</span>
+            <span class="stat-label">最近一个</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="card calendar-card" aria-label="月历">
+          <div class="calendar-toolbar">
+            <button type="button" class="icon-button" id="prev-month" aria-label="上个月">‹</button>
+            <h2 id="month-label">—</h2>
+            <button type="button" class="icon-button" id="next-month" aria-label="下个月">›</button>
+            <button type="button" class="text-button" id="today-button">回到今天</button>
+          </div>
+
+          <div class="weekdays" aria-hidden="true">
+            <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+          </div>
+
+          <div class="grid" id="calendar-grid" role="grid" aria-labelledby="month-label"></div>
+
+          <p class="calendar-hint">
+            带 <span class="dot dot-blue"></span> 的日子有标记 · 圆圈表示<strong>已过去</strong>
+          </p>
+        </section>
+
+        <aside class="side">
+          <section class="card" aria-label="接下来">
+            <div class="card-head">
+              <h2>接下来</h2>
+              <span class="pill" id="upcoming-count">—</span>
+            </div>
+            <ul class="event-list" id="upcoming-list"></ul>
+          </section>
+        </aside>
+      </main>
+
+      <section class="card marked-card" aria-label="全部标记日期">
+        <div class="card-head">
+          <h2>全部标记日期</h2>
+          <span class="pill" id="marked-count">—</span>
+        </div>
+        <div class="table-wrap">
+          <table class="marked-table">
+            <thead>
+              <tr>
+                <th scope="col">日期</th>
+                <th scope="col">标题</th>
+                <th scope="col">重复</th>
+                <th scope="col">距离</th>
+              </tr>
+            </thead>
+            <tbody id="marked-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>
+          数据来源 <code>data/dates.json</code> · 加一个日期就往数组里加一条并推送到仓库 ·
+          当天提醒由 <code>.github/workflows/reminder.yml</code> 创建 Issue。
+        </p>
+        <p class="footer-meta" id="footer-meta">—</p>
+      </footer>
+    </div>
+
+    <template id="event-item-template">
+      <li class="event-item">
+        <span class="swatch"></span>
+        <div class="event-body">
+          <p class="event-title"></p>
+          <p class="event-meta"></p>
+          <p class="event-note"></p>
+        </div>
+        <span class="event-when"></span>
+      </li>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+name: Reminder
+
+# Checks the marked dates every day and opens a GitHub issue on the day itself.
+#
+# Scheduling notes:
+#   • GitHub cron is UTC. 2026-10-04T22:00Z → 2026-10-05 06:00 Asia/Shanghai,
+#     so this fires just after midnight in the configured zone.
+#   • Scheduled runs on a busy shared runner can be delayed by 5–20 minutes;
+#     the job resolves "today" from the timestamp of the run itself, so a late
+#     start never shifts which day is checked.
+#   • GitHub disables cron triggers after 60 days without repository activity.
+#     Run the workflow manually (Actions ▸ Reminder ▸ Run workflow) to revive it.
+
+on:
+  schedule:
+    - cron: '0 22 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Rehearse a specific day (YYYY-MM-DD). Leave empty for today.'
+        required: false
+        type: string
+      notice_lead_days:
+        description: 'Start reminding this many days early (overrides config.json).'
+        required: false
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - 'data/dates.json'
+      - 'data/config.json'
+      - 'scripts/**'
+      - '.github/workflows/reminder.yml'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: reminder
+  cancel-in-progress: false
+
+jobs:
+  remind:
+    name: Check today's dates
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run the test suite
+        run: node scripts/test.mjs
+
+      - name: Validate data files
+        run: node scripts/validate-dates.mjs
+
+      - name: Resolve today's reminders
+        id: reminders
+        env:
+          NOTICE_LEAD_DAYS: ${{ inputs.notice_lead_days }}
+          REHEARSE_DATE: ${{ inputs.date }}
+        run: |
+          set -euo pipefail
+          args=(--out data/reminder.json --print-summary)
+          if [ -n "${REHEARSE_DATE}" ]; then
+            args+=(--date "${REHEARSE_DATE}")
+          fi
+          node scripts/generate-reminders.mjs "${args[@]}"
+
+      - name: Post the reminder issue
+        run: node scripts/publish-reminder-issue.mjs --data data/reminder.json
+
+      - name: Summary
+        if: always()
+        env:
+          STAMP: ${{ steps.reminders.outputs.today }}
+        run: |
+          {
+            echo "### Reminder run"
+            echo ""
+            echo "| Field | Value |"
+            echo "| --- | --- |"
+            echo "| Day checked | \`${STAMP:-unknown}\` |"
+            echo "| Due today | ${{ steps.reminders.outputs.due_today || 'n/a' }} |"
+            echo "| In notice window | ${{ steps.reminders.outputs.in_window || 'n/a' }} |"
+            echo "| Active dates | ${{ steps.reminders.outputs.total || 'n/a' }} |"
+            echo "| Timezone | \`$(node -p "require('./data/config.json').timezone")\` |"
+          } >> "$GITHUB_STEP_SUMMARY"

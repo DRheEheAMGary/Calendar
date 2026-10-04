@@ -1,0 +1,77 @@
+name: Deploy calendar to Pages
+
+# Builds the static calendar and publishes it to GitHub Pages.
+# Requires: Settings ▸ Pages ▸ Build and deployment ▸ Source = "GitHub Actions".
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - 'data/dates.json'
+      - 'data/config.json'
+      - 'scripts/**'
+      - 'package.json'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build the site
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run the test suite
+        run: node scripts/test.mjs
+
+      - name: Validate the date list
+        run: node scripts/validate-dates.mjs
+
+      - name: Generate the reminder projection
+        run: node scripts/generate-reminders.mjs --out data/reminder.json
+
+      - name: Build the static site
+        run: node scripts/build-web.mjs --strict
+
+      - name: Check the built site
+        run: node scripts/check-web.mjs
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload the artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

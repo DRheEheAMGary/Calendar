@@ -1,0 +1,18 @@
+{
+  "name": "calendar",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A tiny static calendar that highlights the dates you care about, with a GitHub Actions job that reminds you on the day.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node scripts/test.mjs",
+    "check": "node scripts/validate-dates.mjs",
+    "remind": "node scripts/generate-reminders.mjs",
+    "build": "node scripts/validate-dates.mjs && node scripts/generate-reminders.mjs --out data/reminder.json && node scripts/build-web.mjs --strict && node scripts/check-web.mjs",
+    "preview": "node scripts/validate-dates.mjs && node scripts/generate-reminders.mjs --out data/reminder.json && node scripts/build-web.mjs",
+    "verify": "node scripts/test.mjs && npm run build"
+  }
+}

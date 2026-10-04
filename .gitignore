@@ -1,0 +1,26 @@
+# Build output of scripts/build-web.mjs — published to GitHub Pages, never committed.
+dist/
+
+# Generated run report; rebuilt by the workflows (and by `npm run build`).
+data/reminder.json
+
+# Screenshots of the rendered page, kept out of the repo.
+screenshots/
+
+# Dependency folders, in case a future tool is ever added.
+node_modules/
+.pnpm-store/
+
+# OS and editor noise.
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
+npm-debug.log*
+
+# Local environment overrides.
+.env
+.env.local

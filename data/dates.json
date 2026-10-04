@@ -1,0 +1,50 @@
+[
+  {
+    "id": "demo-today",
+    "date": "2026-10-04",
+    "title": "示例：今天要做事",
+    "repeat": "none",
+    "note": "这条是演示数据 —— Actions 今天就该为它开一个 Issue。看完就能删掉。",
+    "color": "rose"
+  },
+  {
+    "id": "demo-soon",
+    "date": "2026-10-07",
+    "title": "示例：三天后的截止日期",
+    "repeat": "none",
+    "note": "用来演示「接下来」列表和日历高亮。",
+    "color": "amber"
+  },
+  {
+    "id": "demo-next-week",
+    "date": "2026-10-18",
+    "title": "示例：两周后的会议",
+    "repeat": "none",
+    "note": "改 data/dates.json 然后推送，Pages 和提醒都会跟着更新。",
+    "color": "blue"
+  },
+  {
+    "id": "demo-yearly",
+    "date": "2006-10-04",
+    "title": "示例：每年纪念日",
+    "repeat": "yearly",
+    "note": "repeat 设为 yearly 后，每年这个月日都会提醒一次。",
+    "color": "violet"
+  },
+  {
+    "id": "demo-leap",
+    "date": "2024-02-29",
+    "title": "示例：闰日生日",
+    "repeat": "yearly",
+    "note": "闰年 2/29 提醒；平年自动按 2/28 提醒。",
+    "color": "green"
+  },
+  {
+    "id": "demo-past",
+    "date": "2025-10-04",
+    "title": "示例：已经过去的一次性日期",
+    "repeat": "none",
+    "note": "一次性日期过期后只会在「全部标记日期」里留下记录，不再提醒。",
+    "color": "blue"
+  }
+]
