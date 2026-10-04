@@ -150,10 +150,12 @@ npx serve dist     # 或者 python -m http.server -d dist 8000
 
 | 命令 | 作用 |
 | --- | --- |
+| `npm test` | 跑完整测试套件（89 项检查） |
 | `npm run check` | 只校验 `data/*.json` |
 | `npm run remind` | 打印今天的提醒 JSON |
 | `npm run build` | 完整构建 + 产物检查（等同于 CI 做的事） |
 | `npm run preview` | 构建但不做严格检查（缺少提醒数据也能出页面） |
+| `npm run verify` | 测试 + 构建，提交前跑一遍最省心 |
 
 调试某一天：
 

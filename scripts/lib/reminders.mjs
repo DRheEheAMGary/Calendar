@@ -170,7 +170,7 @@ export function formatIssueBody(report, { previousBody = '' } = {}) {
     '---',
     '',
     `Maintained in [\`data/dates.json\`](../blob/HEAD/data/dates.json) · ` +
-      `[open the calendar](../) · this issue is closed automatically on a day with nothing due.`,
+      'this issue is closed automatically on a day with nothing due.',
   );
 
   return lines.join('\n');
