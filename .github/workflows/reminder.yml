@@ -48,12 +48,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Run the test suite
         run: node scripts/test.mjs
@@ -75,6 +75,10 @@ jobs:
           node scripts/generate-reminders.mjs "${args[@]}"
 
       - name: Post the reminder issue
+        env:
+          # GITHUB_TOKEN is available to the workflow as a secret context, not as
+          # an inherited environment variable — it must be passed explicitly.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/publish-reminder-issue.mjs --data data/reminder.json
 
       - name: Summary

@@ -3,7 +3,7 @@
 一个极简的日历：**把你关心的日期写进一个 JSON 文件**，日历会高亮它们，
 并且 **GitHub Actions 每天自动检查，命中当天就开一个 Issue 提醒你**。
 
-- 🌐 **在线日历**：`https://DRheEheAMGary.github.io/Calendar/`
+- 🌐 **在线日历**：<https://drheeheamgary.github.io/Calendar/>
 - 🔔 **提醒 Issue**：仓库 Issues 里标着 `calendar-reminder` 的那个
 - 🪶 **零依赖**：不需要 `npm install`，只用 Node 内置能力
 

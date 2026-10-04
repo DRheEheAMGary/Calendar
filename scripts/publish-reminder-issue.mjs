@@ -70,8 +70,16 @@ async function main() {
 
   const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
   if (!token) {
-    console.error('\n✖ no GH_TOKEN / GITHUB_TOKEN in the environment; nothing to publish.');
-    console.error('  Run with --dry-run to preview without a token.\n');
+    console.error('\n✖ No token in the environment, so there is nothing to publish.');
+    console.error('');
+    console.error('  GITHUB_TOKEN is NOT an inherited environment variable — a workflow step');
+    console.error('  must pass it explicitly, for example:');
+    console.error('');
+    console.error('      env:');
+    console.error('        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}');
+    console.error('');
+    console.error('  Note that the default token needs `permissions: issues: write`.');
+    console.error('  Use --dry-run to preview the run without touching any issue.\n');
     return 1;
   }
   const repository = process.env.GITHUB_REPOSITORY;
